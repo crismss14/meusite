@@ -51,7 +51,6 @@ function animarBrilhos() {
 for (let i = 0; i < MAX_BRILHOS; i++) criarBrilho();
 brilhoImg.onload = animarBrilhos;
 
-document.addEventListener("contextmenu",e=>e.preventDefault());document.addEventListener("keydown",e=>{if(e.ctrlKey&&85===e.keyCode||e.ctrlKey&&83===e.keyCode||123===e.keyCode)e.preventDefault()});
-
-  
+// 1. Bloquear o botão direito do mouse document.addEventListener('contextmenu', event => event.preventDefault()); // 2. Bloquear atalhos de teclado (Ctrl+U, Ctrl+S, F12, etc.) document.addEventListener('keydown', function (event) { // Tecla 'u' (code 85) + CTRL if (event.ctrlKey && event.keyCode === 85) { event.preventDefault(); } // Tecla 's' (code 83) + CTRL (evita salvar a página) if (event.ctrlKey && event.keyCode === 83) { event.preventDefault(); } // Tecla F12 (code 123) if (event.keyCode === 123) { event.preventDefault(); }
+    
   });</script><footer>© 2026 • ÁGAPE DESIGN AFETIVO • Feito com amor 💖</footer></body></html>
