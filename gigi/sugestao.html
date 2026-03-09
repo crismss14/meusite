@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sugestões de Presentes</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* VIDEO DE FUNDO */
+.video-background-container{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+overflow:hidden;
+}
+
+.hero-video{
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0.9;
+}
+
+.video-overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(to bottom, rgba(255,166,201,0.3), #FFF9FC);
+}
+
+:root{
+    --rosa: #FF69B4;
+    --rosa-escuro: #C71585;
+    --bg: #FFF9FC;
+}
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Nunito',sans-serif;
+background:var(--bg);
+padding-bottom:60px;
+}
+
+/* BOTÃO DE VOLTAR */
+.botao-voltar{
+  display:inline-block;
+  padding:10px 20px;
+  background:var(--rosa);
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+  transition:background .2s, transform .2s;
+  margin:20px auto;
+  display:block;
+  width:fit-content;
+}
+
+.botao-voltar:hover{
+  background:var(--rosa-escuro);
+  transform:scale(1.05);
+}
+
+/* CARD DO TÍTULO */
+.card-titulo{
+background:white;
+border-radius:20px;
+padding:20px;
+max-width:350px;
+margin:0 auto 20px auto;
+text-align:center;
+box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+.card-titulo h1{
+font-family:'Dancing Script',cursive;
+font-size:2.5rem;
+color:var(--rosa-escuro);
+}
+
+.card-titulo p{
+margin-top:8px;
+color:#666;
+}
+
+/* CARD DE AVISO */
+.aviso-tamanhos{
+background:#fff0f7;
+border:2px dashed #FFADD6;
+padding:12px;
+border-radius:12px;
+margin:0 auto 25px auto;
+max-width:350px;
+color:#C71585;
+text-align:center;
+font-weight:bold;
+font-size:0.95rem;
+}
+
+/* CONTAINER DOS CARDS */
+.presentes-container{
+display:flex;
+flex-direction:column;
+gap:20px;
+align-items:center;
+padding:0 15px;
+}
+
+/* CARD ALTERAR O TAMANHO DOS CARDS */
+.card-presente{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 8px 18px rgba(0,0,0,.12);
+transition:transform .2s;
+width:100%;
+max-width:250px;
+}
+
+.card-presente:hover{
+transform:scale(1.03);
+}
+
+/* IMAGEM */
+.card-presente img{
+width:100%;
+height:auto;
+display:block;
+}
+
+/* RODAPÉ */
+.footer{
+text-align:center;
+font-size:.9rem;
+padding:25px 10px;
+color:var(--rosa-escuro);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Vídeo de fundo -->
+<div class="video-background-container">
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="jardimencantado.mp4" type="video/mp4">
+  </video>
+  <div class="video-overlay"></div>
+</div>
+
+<!-- BOTÃO DE VOLTAR ACIMA DO CARD DE TÍTULO -->
+<a href="index.html" class="botao-voltar">← Voltar</a>
+
+<!-- CARD DO TÍTULO -->
+<div class="card-titulo">
+  <h1>Sugestões de Presentes 🎁</h1>
+  <p>Ideias especiais que a Giovanna vai amar</p>
+</div>
+
+<!-- AVISO -->
+<div class="aviso-tamanhos">
+ 👟 Calçado: 20 ou 22 Tam | 👗 Roupa: 2 a 3 Anos
+</div>
+
+<!-- CARDS -->
+<div class="presentes-container">
+
+  <div class="card-presente">
+    <img src="presente1.jpg">
+  </div>
+
+  <div class="card-presente">
+    <img src="presente2.jpg">
+  </div>
+
+  <div class="card-presente">
+    <img src="presente3.jpg">
+  </div>
+
+</div>
+
+<footer class="footer">
+🎀 Obrigada por celebrar com a gente! 🎀
+</footer>
+
+</body>
+</html>
