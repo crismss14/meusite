@@ -7,7 +7,7 @@
 
 <style>
 
-html, body{
+html,body{
 margin:0;
 padding:0;
 width:100%;
@@ -66,14 +66,13 @@ background:transparent;
 border:none;
 outline:none;
 cursor:pointer;
-
 -webkit-tap-highlight-color: transparent;
 tap-highlight-color: transparent;
 }
 
-#btn1{ top:77%; left:44%; }
-#btn2{ top:77%; left:21%; }
-#btn3{ top:78%; left:66%; }
+#btn1{top:77%;left:44%;}
+#btn2{top:77%;left:21%;}
+#btn3{top:78%;left:66%;}
 
 #popup{
 position:fixed;
@@ -115,7 +114,6 @@ cursor:pointer;
 background:transparent;
 border:none;
 outline:none;
-
 -webkit-tap-highlight-color: transparent;
 tap-highlight-color: transparent;
 }
@@ -131,7 +129,7 @@ padding:10px 18px;
 border-radius:20px;
 font-size:14px;
 opacity:0;
-transition:opacity 0.4s;
+transition:opacity .4s;
 z-index:50;
 pointer-events:none;
 }
@@ -144,7 +142,7 @@ pointer-events:none;
 <div id="palco">
 
 <div id="capa">
-<img src="capa.png" alt="Convite">
+<img src="capa.png">
 </div>
 
 <div id="videoContainer">
@@ -153,13 +151,9 @@ pointer-events:none;
 <source src="video.mp4" type="video/mp4">
 </video>
 
-<a class="btn-map" id="btn1"
-href="https://maps.app.goo.gl/AoRhWLp8GDK3EoCv5"
-target="_blank"></a>
+<a class="btn-map" id="btn1" href="https://maps.app.goo.gl/AoRhWLp8GDK3EoCv5" target="_blank"></a>
 
-<a class="btn-map" id="btn2"
-href="https://wa.me/5548996612459?text=Quero%20confirmar%20minha%20presen%C3%A7a%20na%20festa%20da%20Giovanna!%20%E2%9C%A8"
-target="_blank"></a>
+<a class="btn-map" id="btn2" href="https://wa.me/5548996612459?text=Quero%20confirmar%20minha%20presen%C3%A7a%20na%20festa%20da%20Giovanna!%20%E2%9C%A8" target="_blank"></a>
 
 <div class="btn-map" id="btn3"></div>
 
@@ -181,18 +175,18 @@ target="_blank"></a>
 
 <script>
 
-const capa = document.getElementById("capa")
-const videoContainer = document.getElementById("videoContainer")
-const video = document.getElementById("video")
-const musica = document.getElementById("musica")
+const capa=document.getElementById("capa")
+const videoContainer=document.getElementById("videoContainer")
+const video=document.getElementById("video")
+const musica=document.getElementById("musica")
 
-const btn3 = document.getElementById("btn3")
-const popup = document.getElementById("popup")
-const closePopup = document.getElementById("closePopup")
-const pixBtn = document.getElementById("pixBtn")
-const pixAviso = document.getElementById("pixAviso")
+const btn3=document.getElementById("btn3")
+const popup=document.getElementById("popup")
+const closePopup=document.getElementById("closePopup")
+const pixBtn=document.getElementById("pixBtn")
+const pixAviso=document.getElementById("pixAviso")
 
-const chavePix = "48996612459"
+const chavePix="48996612459"
 
 let startX=null
 let startY=null
@@ -223,7 +217,7 @@ videoContainer.style.display="block"
 musica.currentTime=0
 video.currentTime=0
 
-musica.volume=0.6
+musica.volume=1
 
 Promise.all([
 video.play(),
