@@ -354,7 +354,15 @@ pixAviso.style.opacity="0"
 
 })
 
-  
+  // Bloquear botão direito
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Bloquear atalhos de teclado (Ctrl+U, Ctrl+S, F12)
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.keyCode === 85) { event.preventDefault(); }
+        if (event.ctrlKey && event.keyCode === 83) { event.preventDefault(); }
+        if (event.keyCode === 123) { event.preventDefault(); }
+    });
 
 </script>
 
