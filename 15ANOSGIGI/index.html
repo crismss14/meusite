@@ -43,7 +43,6 @@ html,body{
   object-fit:cover;
 }
 
-/* ÁREA DE ESFREGAR - adicionado */
 #abrirConvite{
   position:absolute;
   inset:0;
@@ -81,8 +80,6 @@ video{
   border:none;
   outline:none;
   cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
 }
 
 #btn1{top:77%; left:44%;}
@@ -116,7 +113,6 @@ video{
   border-radius:8px;
   background:#9660a8;
   color:white;
-  cursor:pointer;
 }
 
 #pixBtn{
@@ -125,12 +121,8 @@ video{
   height:62px;
   top:75%;
   z-index:31;
-  cursor:pointer;
   background:transparent;
   border:none;
-  outline:none;
-  -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
 }
 
 #pixAviso{
@@ -146,43 +138,47 @@ video{
   opacity:0;
   transition:opacity .4s;
   z-index:50;
-  pointer-events:none;
 }
 </style>
 </head>
 
 <body>
+
 <div id="palco">
-  <div id="capa">
-    <img src="capa.png">
-    <!-- ÁREA DE ESFREGAR - adicionado -->
-    <button id="abrirConvite" aria-label="Esfregue para abrir"></button>
-  </div>
 
-  <div id="videoContainer">
-    <video id="video" muted playsinline preload="auto">
-      <source src="video.mp4" type="video/mp4">
-    </video>
+<div id="capa">
+<img src="capa.png">
+<button id="abrirConvite"></button>
+</div>
 
-    <a class="btn-map" id="btn1" href="https://maps.app.goo.gl/AoRhWLp8GDK3EoCv5" target="_blank"></a>
-    <a class="btn-map" id="btn2" href="https://wa.me/5548996612459?text=Quero%20confirmar%20minha%20presen%C3%A7a%20na%20festa%20da%20Giovanna!%20%E2%9C%A8" target="_blank"></a>
-    <div class="btn-map" id="btn3"></div>
-  </div>
+<div id="videoContainer">
 
-  <audio id="musica" loop preload="auto">
-    <source src="musica.mp3" type="audio/mpeg">
-  </audio>
+<video id="video" muted playsinline preload="auto">
+<source src="video.mp4" type="video/mp4">
+</video>
+
+<a class="btn-map" id="btn1" href="https://maps.app.goo.gl/AoRhWLp8GDK3EoCv5" target="_blank"></a>
+<a class="btn-map" id="btn2" href="https://wa.me/5548996612459?text=Quero%20confirmar%20minha%20presen%C3%A7a%20na%20festa%20da%20Giovanna!%20%E2%9C%A8" target="_blank"></a>
+<div class="btn-map" id="btn3"></div>
+
+</div>
+
+<audio id="musica" loop preload="auto">
+<source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 </div>
 
 <div id="popup">
-  <img src="sugestao.png">
-  <button id="closePopup">X Fechar</button>
-  <button id="pixBtn"></button>
+<img src="sugestao.png">
+<button id="closePopup">X Fechar</button>
+<button id="pixBtn"></button>
 </div>
 
 <div id="pixAviso">Chave PIX copiada ✅</div>
 
 <script>
+
 const capa = document.getElementById("capa")
 const videoContainer = document.getElementById("videoContainer")
 const video = document.getElementById("video")
@@ -193,182 +189,173 @@ const popup = document.getElementById("popup")
 const closePopup = document.getElementById("closePopup")
 const pixBtn = document.getElementById("pixBtn")
 const pixAviso = document.getElementById("pixAviso")
-const area = document.getElementById("abrirConvite") // adicionado
+
+const area = document.getElementById("abrirConvite")
 
 const chavePix = "48996612459"
 
 let conviteAberto = false
+let audioLiberado = false
 
-/* PRE CARREGAR VIDEO */
-window.addEventListener("load",()=>{ video.load() })
+/* DESBLOQUEAR AUDIO NO PRIMEIRO TOQUE */
 
-function iniciarVideoEMusica() {
-  videoContainer.style.display = "block"
-  capa.style.display = "none"
+function desbloquearAudio(){
 
-  // vídeo otimizado para mobile
-  video.setAttribute("playsinline", "")
-  video.setAttribute("webkit-playsinline", "")
-  video.muted = true
-  video.play().catch(()=>{})
+if(audioLiberado) return
 
-  // música otimizada para mobile
-  musica.muted = false
-  musica.volume = 0.4
-  musica.play().catch(()=>{})
+musica.muted = true
+musica.volume = 0
+
+const p = musica.play()
+
+if(p !== undefined){
+
+p.then(()=>{
+
+musica.pause()
+musica.currentTime = 0
+musica.muted = false
+musica.volume = 0.4
+
+audioLiberado = true
+
+}).catch(()=>{})
+
 }
+
+}
+
+document.addEventListener("touchstart",desbloquearAudio,{once:true})
+document.addEventListener("pointerdown",desbloquearAudio,{once:true})
+document.addEventListener("mousedown",desbloquearAudio,{once:true})
+
+/* INICIAR VIDEO */
+
+function iniciarVideoEMusica(){
+
+videoContainer.style.display="block"
+capa.style.display="none"
+
+video.setAttribute("playsinline","")
+video.setAttribute("webkit-playsinline","")
+
+video.muted=true
+video.play().catch(()=>{})
+
+}
+
+/* ABRIR CONVITE */
 
 function abrirConvite(){
-  if(conviteAberto) return
-  conviteAberto = true
-  iniciarVideoEMusica()
+
+if(conviteAberto) return
+
+conviteAberto=true
+
+iniciarVideoEMusica()
+
 }
 
-/* GESTO DE ESFREGAR - NOVO SISTEMA COMPLETO */
-if(!capa || !area) {
-  console.warn("Capa ou área de esfregar não encontrados")
-}
+/* SISTEMA DE ESFREGAR */
 
 const SCRUBTHRESHOLD = 30
+
 let armed = false
 let lastPointerX = null
 let lastPointerY = null
 let totalDistance = 0
-let audioUnlocked = false
-let firstTouchDetected = false
 
-// Master unlock para iOS/Android
-const masterAudioUnlock = async () => {
-  if (audioUnlocked) return true
-  try {
-    const prevVol = musica.volume
-    musica.muted = false
-    musica.volume = 0
-    musica.currentTime = 0
-    const playPromise = musica.play()
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        audioUnlocked = true
-        musica.pause()
-        musica.volume = prevVol
-      }).catch(()=>{})
-    } else {
-      audioUnlocked = true
-    }
-    return true
-  } catch (err) {
-    console.warn("Erro no master unlock", err)
-    return false
-  }
-}
-
-// Primeiro toque desbloqueia áudio
-const handleFirstTouch = (e) => {
-  if (!firstTouchDetected) {
-    firstTouchDetected = true
-    masterAudioUnlock()
-  }
-}
-document.addEventListener("touchstart", handleFirstTouch, { passive:true })
-document.addEventListener("pointerdown", handleFirstTouch, { passive:true })
-document.addEventListener("mousedown", handleFirstTouch, { passive:true })
-
-// Gatilho do esfregar
 const arm = async () => {
-  if (armed) return
-  armed = true
-  abrirConvite()
+
+if(armed) return
+
+armed = true
+
+if(audioLiberado){
+
+musica.currentTime = 0
+musica.volume = 0.4
+musica.play().catch(()=>{})
+
 }
 
-// POINTER EVENTS (desktop + mobile moderno)
-area.addEventListener("pointerdown", (e) => {
-  e.preventDefault()
-  lastPointerX = e.clientX
-  lastPointerY = e.clientY
-  totalDistance = 0
-}, { passive:false })
+abrirConvite()
 
-area.addEventListener("pointermove", (e) => {
-  if (armed || lastPointerX === null) return
-  const dx = e.clientX - lastPointerX
-  const dy = e.clientY - lastPointerY
-  const distance = Math.sqrt(dx*dx + dy*dy)
-  totalDistance += distance
-  lastPointerX = e.clientX
-  lastPointerY = e.clientY
-  if (totalDistance >= SCRUBTHRESHOLD) {
-    arm()
-  }
-}, { passive:true })
-
-area.addEventListener("pointerup", (e) => {
-  e.preventDefault()
-  lastPointerX = null
-  lastPointerY = null
-  totalDistance = 0
-}, { passive:false })
-
-// TOUCH EVENTS (fallback iOS Safari)
-area.addEventListener("touchstart", (e) => {
-  if (e.touches.length === 0) return
-  lastPointerX = e.touches[0].clientX
-  lastPointerY = e.touches[0].clientY
-  totalDistance = 0
-}, { passive:true })
-
-area.addEventListener("touchmove", (e) => {
-  if (armed || lastPointerX === null || e.touches.length === 0) return
-  const dx = e.touches[0].clientX - lastPointerX
-  const dy = e.touches[0].clientY - lastPointerY
-  const distance = Math.sqrt(dx*dx + dy*dy)
-  totalDistance += distance
-  lastPointerX = e.touches[0].clientX
-  lastPointerY = e.touches[0].clientY
-  if (totalDistance >= SCRUBTHRESHOLD) {
-    arm()
-  }
-}, { passive:true })
-
-area.addEventListener("touchend", () => {
-  lastPointerX = null
-  lastPointerY = null
-  totalDistance = 0
-}, { passive:true })
-
-/* POPUP E BOTOES - sem alterações */
-btn3.addEventListener("click", ()=>{ popup.style.display="flex" })
-closePopup.addEventListener("click", ()=>{ popup.style.display="none" })
-
-pixBtn.addEventListener("click", ()=>{
-  navigator.clipboard.writeText(chavePix).then(()=>{
-    pixAviso.style.opacity="1"
-    setTimeout(()=>{ pixAviso.style.opacity="0" },2000)
-  })
-})
-
-/* AJUSTAR PALCO - sem alterações */
-const palco = document.getElementById("palco")
-
-function ajustarPalco(){
-  const vw = window.innerWidth
-  const vh = window.innerHeight
-  let w = vw
-  let h = w*(16/9)
-  if(h>vh){ h = vh; w = h*(9/16) }
-  palco.style.width = w+"px"
-  palco.style.height = h+"px"
 }
 
-ajustarPalco()
-window.addEventListener("resize", ajustarPalco)
-window.addEventListener("orientationchange", ajustarPalco)
+area.addEventListener("pointerdown",(e)=>{
 
-document.addEventListener('contextmenu', event => event.preventDefault())
-document.addEventListener('keydown', function (event) {
-  if (event.ctrlKey && event.keyCode === 85) event.preventDefault()
-  if (event.ctrlKey && event.keyCode === 83) event.preventDefault()
-  if (event.keyCode === 123) event.preventDefault()
+e.preventDefault()
+
+lastPointerX = e.clientX
+lastPointerY = e.clientY
+
+totalDistance = 0
+
 })
+
+area.addEventListener("pointermove",(e)=>{
+
+if(armed || lastPointerX === null) return
+
+const dx = e.clientX - lastPointerX
+const dy = e.clientY - lastPointerY
+
+const distance = Math.sqrt(dx*dx + dy*dy)
+
+totalDistance += distance
+
+lastPointerX = e.clientX
+lastPointerY = e.clientY
+
+if(totalDistance >= SCRUBTHRESHOLD){
+
+arm()
+
+}
+
+})
+
+area.addEventListener("pointerup",()=>{
+
+lastPointerX = null
+lastPointerY = null
+totalDistance = 0
+
+})
+
+/* POPUP */
+
+btn3.addEventListener("click",()=>{
+
+popup.style.display="flex"
+
+})
+
+closePopup.addEventListener("click",()=>{
+
+popup.style.display="none"
+
+})
+
+pixBtn.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(chavePix).then(()=>{
+
+pixAviso.style.opacity="1"
+
+setTimeout(()=>{
+
+pixAviso.style.opacity="0"
+
+},2000)
+
+})
+
+})
+
+  
+
 </script>
 
 </body>
